@@ -41,7 +41,7 @@ async function validateJSONL(file) {
 async function uploadDataset() {
 	if (await validateJSONL('career_chat.jsonl')) {
 		const status = await openai.files.create({
-			file: fs.createReadStream('dataset.jsonl'),
+			file: fs.createReadStream('careerchat.jsonl'),
 
 			purpose: 'fine-tune',
 		});

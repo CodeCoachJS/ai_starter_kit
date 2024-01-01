@@ -1,48 +1,35 @@
-require('dotenv').config();
+const express = require('express');
 const OpenAI = require('openai');
-const fs = require('fs');
-const readline = require('readline');
+require('dotenv').config();
 
 const openai = new OpenAI({ apiKey: process.env.API_KEY });
 
-const FT_JOB_ID = 'ftjob-D4CPx9e4Hwtlqroyt264Mi6O';
+const app = express();
+const port = 3000;
 
-const FT_MODEL_ID = 'ft:gpt-3.5-turbo-0613:personal::7zuPTNEA';
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-async function validateJSONL(file) {
-	const fileStream = fs.createReadStream(file);
-	const rl = readline.createInterface({
-		input: fileStream,
-		crlfDelay: Infinity,
-	});
-	let lineNumber = 0;
+app.post('/chat', async (req, res) => {
+	try {
+		const userQuery = req.body.message; // Get user message from request body
+		const completion = await openai.chat.completions.create({
+			messages: [
+				{
+					role: 'user',
+					content: userQuery,
+				},
+			],
+			model: process.env.FT_MODEL_ID, // Use your fine-tuned model ID
+		});
 
-	for await (const line of rl) {
-		lineNumber++;
-		try {
-			JSON.parse(line);
-		} catch (e) {
-			console.error(
-				`Invalid JSON object at line ${lineNumber}: ${e.message}`
-			);
-			return;
-		}
+		res.send(completion.choices[0]); // Send the response back to the client
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Error processing your request');
 	}
-	console.log('File is a valid JSONL file');
-}
+});
 
-const main = async () => {
-	const completion = await openai.chat.completions.create({
-		messages: [
-			{
-				role: 'user',
-				content:
-					'should i include previous work experience on my resume not related to tech?',
-			},
-		],
-		model: FT_MODEL_ID,
-	});
-	console.log(completion.choices[0]);
-};
-
-main();
+app.listen(port, () => {
+	console.log(`Server running on http://localhost:${port}`);
+});
