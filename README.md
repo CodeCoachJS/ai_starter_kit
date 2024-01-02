@@ -1,4 +1,4 @@
-## Using OpenAI API to Build Your Own LLM (Large Language Model)
+## Using OpenAI API to Build Your Own Fine Tuned Model
 
 ### Introduction
 
@@ -38,7 +38,9 @@ Let's get started.
 5. **Generate Completions**:
     - Use the `getModelCompletion` function with your fine-tuned model ID to generate completions.
 
-<div style="position: relative; padding-bottom: 64.98194945848375%; height: 0;"><iframe src="https://www.loom.com/embed/2a08588964154ff48e00dc942100c375?sid=29572858-2a5a-40c0-97d2-90391dc9db08" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+### Video Walkthrough:
+
+https://www.loom.com/embed/2a08588964154ff48e00dc942100c375?sid=29572858-2a5a-40c0-97d2-90391dc9db08
 
 ### Use Cases
 
